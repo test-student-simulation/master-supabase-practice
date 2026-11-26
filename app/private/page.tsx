@@ -17,7 +17,7 @@ export default async function PrivatePage() {
 
     // ログインしていなければ、ページを渡さずにログイン画面へ移す
     if (!data) {
-        redirect("/login");
+        redirect("/login?next=/private");
     }
 
     return (
@@ -26,9 +26,7 @@ export default async function PrivatePage() {
             <p className="mt-2">ログインした人だけが見られるページです。</p>
             <p className="mt-2">ログイン中：{data.claims.email}</p>
             <form action={signOut}>
-                <button className="mt-4 rounded bg-gray-500 px-6 py-2 text-white">
-                    ログアウト
-                </button>
+                <button className="cursor-pointer text-blue-500 underline">ログアウト</button>
             </form>
             <Link href="/" className="mt-4 inline-block text-blue-500 underline">
                 トップに戻る

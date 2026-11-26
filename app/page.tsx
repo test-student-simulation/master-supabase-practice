@@ -22,7 +22,7 @@ export default async function Home() {
         <li>
           {data ? (
             <form action={signOut}>
-              <button className="text-blue-500 underline">ログアウト</button>
+              <button className="cursor-pointer text-blue-500 underline">ログアウト</button>
             </form>
           ) : (
             <Link href="/login" className="text-blue-500 underline">

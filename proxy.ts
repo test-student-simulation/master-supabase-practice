@@ -35,8 +35,19 @@ export async function proxy(request: NextRequest) {
 
     // ログイン状態を確かめる（期限が近いログイン情報は、ここで更新される）
     // この行を消すと、しばらくして勝手にログアウトされることがある
-    await supabase.auth.getClaims()
+    const { data } = await supabase.auth.getClaims()
 
+    // ログインしていない人が会員ページ（/private と、その下のページ）を開いたら、
+    // ページを作る前にログイン画面へ移す。ログインの後は、開こうとしたページに戻る
+    const path = request.nextUrl.pathname
+    const isPrivate = path === '/private' || path.startsWith('/private/')
+    if (!data && isPrivate) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/login'
+        url.search = `?next=${encodeURIComponent(path)}`
+        return NextResponse.redirect(url)
+    }
+    
     return supabaseResponse
 }
 
